@@ -28,7 +28,7 @@ public:
 
 class No {
 public:
-	Item *item;
+    Item *item;
     No *prox;
 
     No() {}
@@ -52,42 +52,42 @@ public:
 
 class Lista{
 private:
-	No *prim, *ult;
+    No *prim, *ult;
 public:
 	No* getPrim(){
-		return prim;
+	    return prim;
 	}
 
 	No* getUlt(){
-		return ult;
+	    return ult;
 	}
 	Lista(){
-		prim = new No(); // cabeça
+	    prim = new No(); // cabeça
 	    prim -> setProx(NULL);
-    	ult = prim;
+	    ult = prim;
 	}
 	void insere(Item* x){
-		ult->setProx(new No());
-		ult = ult->prox;
-		ult->prox = NULL;
-		ult->item = x;
+	    ult->setProx(new No());
+	    ult = ult->prox;
+	    ult->prox = NULL;
+	    ult->item = x;
 	}
 
 	void print(){
-		No* p = getPrim()->getProx();
-		while(p != NULL){
-			p->getItem()->print();
-		    p = p->prox;
-		}
-		cout << endl;
+	    No* p = getPrim()->getProx();
+	    while(p != NULL){
+		p->getItem()->print();
+	        p = p->prox;
+	    }
+	    cout << endl;
 	}
-	
+
 	void destroy(){
-		No* p = getPrim()->getProx();
-    	while(p != NULL){
-      		delete(p);
-    	}
-    	p = p->prox;
+	    No* p = getPrim()->getProx();
+	    while(p != NULL){
+		delete(p);
+	    }
+	    p = p->prox;
 	}
 };
 
@@ -98,11 +98,11 @@ class Graph { // Não-direcionado
 	
 	public:
 	Graph(int n){
-		initialize(n);
+	    initialize(n);
 	} // construtor
 	void initialize(int n){
-		this->n = n;
-    	adj = new Lista[n+1]; 
+	    this->n = n;
+    	    adj = new Lista[n+1]; 
   	}
   	
 	void insertEdge(Vertex v, Vertex u){
@@ -113,15 +113,15 @@ class Graph { // Não-direcionado
 		m++;
 	}
 	void print(){
-		for (int i = 1; i <= n; i++) {
+	    for (int i = 1; i <= n; i++) {
     		cout << "v[" << i << "] = ";
     		adj[i].print();
-  		}
+  	    }
 	}
 	void destroy(){
-		for (int i = 0; i <= n; i++) {
+	    for (int i = 0; i <= n; i++) {
     		adj[i].destroy(); // destroi lista
-  		}
+  	    }
   		delete( adj );
   		n = m = 0;
 	}
