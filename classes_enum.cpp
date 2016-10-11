@@ -73,7 +73,6 @@ private:
 	Cor cor;
 	
 public:
-	
 	void setCor(Cor cor){
     	this->cor = cor;
     }
@@ -124,34 +123,34 @@ public:
     	}
 	}
 };
-
+template <class T>
 class Graph { // Não-direcionado
 	
 	Lista *adj;
-	int n;//Ordem
-	int m;//tamanho
+	int ordem;//Ordem
+	int tamanho;//tamanho
 	int tempo;
 	
 	public:
-	Graph(int n){
-		initialize(n);
+	Graph(T ordem){
+		initialize(ordem);
 	} // construtor
-	void initialize(int n){
-		this->n = n;
-    	adj = new Lista[n+1];
+	void initialize(T ordem){
+		this->ordem = ordem;
+    	adj = new Lista[ordem+1];
   	}
-	int getOrdem(){
-  		return this->n;
+	T getOrdem(){
+  		return this->ordem;
   	}
   	
 	void makeWhite(){
-		for(int i = 1; i <= n; i++){
+		for(int i = 1; i <= ordem; i++){
 			adj[i].setCor(branco);
 		}
 	}
 	
 	void makePiNull(){
-		for(int i = 1; i <= n; i++){
+		for(int i = 1; i <= ordem; i++){
 			adj[i].setPi(NULL);
 		}
 	}
@@ -161,27 +160,27 @@ class Graph { // Não-direcionado
 		adj[u].insere(x); // Insere na lista
 		x = new Item (u);
 		adj[v].insere(x); // Insere na lista
-		m++;
+		tamanho++;
 	}
 	void print(){
-		for (int i = 1; i <= n; i++) {
+		for (int i = 1; i <= ordem; i++) {
     		cout << "v[" << i << "] = ";
     		adj[i].print();
   		}
 	}
 	void destroy(){
-		for (int i = 0; i <= n; i++) {
+		for (int i = 0; i <= ordem; i++) {
     		adj[i].destroy(); // destroi lista
   		}
   		delete(adj);
-  		n = m = 0;
+  		ordem = tamanho = 0;
 	}
 	
 	void DSF(){
 		makeWhite();
 		makePiNull();
 		this->tempo = 0;
-		for(int i = 1; i <= n; i++){
+		for(int i = 1; i <= ordem; i++){
 			if(adj[i].getCor() == branco){
 				DFS_VISITA(adj[i]);
 			}
@@ -205,6 +204,7 @@ class Graph { // Não-direcionado
 			f = this->tempo;
 			p = p->prox;
 		}
+		cout<<"dfs_visita:after"<<endl;
 	}
 // métodos get/set para n, m e adj.
 };
@@ -212,7 +212,7 @@ class Graph { // Não-direcionado
 // Função auxiliar
 void testaGrafo() {
 	
-	Graph g(5);
+	Graph<int> g(5);
 	
 	g.insertEdge(1, 2);
 	g.insertEdge(2, 3);
@@ -228,7 +228,7 @@ class busca{
 	private:
 		int tempo;
 	public:
-		void DSF(Graph g){
+		void DSF(Graph<int> g){
 			g.makeWhite();
 			g.makePiNull();
 			tempo = 0;
@@ -238,9 +238,10 @@ class busca{
 		}
 };
 
+template <class T>
 class util{
 	public:
-		int* split(string str){
+		T* split(string str){
 			
 			int cont = 0;
 			int p = 0;
@@ -269,7 +270,6 @@ class util{
 		}
 	
 };
-
 int main(int argc, const char * argv[]) {
 	
 	/*
@@ -277,19 +277,22 @@ int main(int argc, const char * argv[]) {
 	int m;
 	*/
 	int *aux;
-	util u;
+	util<int> u;
 	int ordem;
 	int tamanho;
 	string entrada;
-	  
+	
+	
+	cout << "Insira a ordem e o tamanho" <<endl;
 	getline(cin, entrada);
 	aux = u.split(entrada);
 	ordem = aux[0];
 	tamanho = aux[1];
 	
-	Graph universo(ordem);
+	Graph<int> universo(ordem);
 	
 	for(int i = 0; i < tamanho; i++){
+		cout<<"vertice 1 e 2" <<endl;
 		getline(cin, entrada);
 		aux = u.split(entrada);
 		universo.insertEdge(aux[0], aux[1]);
