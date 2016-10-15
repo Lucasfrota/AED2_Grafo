@@ -143,7 +143,7 @@ class ListaVertice{
 
 template <class T>
 class Graph{
-	public://mudar depois
+	private:
 		int ordem;
 		int tamanho;
 		int tempo;
