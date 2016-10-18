@@ -62,7 +62,7 @@ class Fila{
 			
 			T item;
 			
-			int saida = items[1].getValor();
+			int saida = items[1].getValor();//coloquei essa parte pra faer um paranaue que precisa no programa
 			
 			item = *frente;
 			
