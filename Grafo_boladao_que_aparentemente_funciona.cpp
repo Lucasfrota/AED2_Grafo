@@ -65,7 +65,6 @@ class Fila{
 			this->tras++;
 			this->tras->setValor(item.getValor());
 			cout << "Tras: " << tras->getValor() << "\n";
-			//items[1].setValor(item.getValor());//CUIDADO! Gambiarra violenta nao mantenha distancia!
 			tras->setProx(NULL);
 		}
 		
