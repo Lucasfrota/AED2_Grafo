@@ -15,11 +15,37 @@ enum Cor{
 };
 
 template <class T>
+class Lista{
+	private:
+		T *raiz = NULL;
+		T *ult = NULL;
+	public:
+		void insere(T v){
+			if(*raiz == NULL){
+				raiz = &v;
+			}
+			else{
+				ult->setProx(v);
+			}
+			ult = &v;
+		}
+};
+
+template <class T>
 class Item{
 	private:
 		T valor;
-		Item *prox;
+		Item *prox = NULL;
+		T *raiz;
 	public:
+		
+		Item(T valor){
+			this->valor = valor;
+			this->raiz = &valor;
+		}
+		Item(){
+			
+		}
 		T getValor(){
 			return this->valor;
 		}
@@ -31,6 +57,74 @@ class Item{
 		}
 		void setProx(Item *item){
 			this->prox = item;
+		}		
+		bool contem(T elemento, T no){
+			if(no == NULL){
+				return false;
+			}
+			else if(elemento == no){
+				return true;
+			}else{
+				contem(elemento, no.getProx());	
+			}
+		}
+		void retira(T v){
+			T *aux = acha(v, *raiz);
+			
+			if(*aux != *raiz){ // caso o elemento nao seja o no raiz
+				aux->setProx(aux->getProx()->getProx());
+				aux->getProx()->setProx(NULL);
+			}else{ // caso o elemento seja o no raiz
+				raiz = acha(v, *raiz);
+				
+				T auxiliar = *raiz;
+				
+				raiz->setProx(NULL); //o proximo vertice do vertice que a raiz esta apontando recebe null
+
+				raiz = auxiliar.getProx(); // a nova raiz é o proximo vertice
+			}
+		}
+		T acha(T elemento, T no){		
+			
+			if(contem(elemento, *raiz)){
+			
+				if(elemento == no.getProx()){ // caso o elemento nao seja o no raiz
+					return no;
+					
+				}else if(elemento == no){ // caso o elemento seja o no raiz
+					return no;
+					
+				}else{
+					acha(elemento, no);
+				}
+			}
+		}
+		T *getVerticeEm(int posicao){	
+			
+			return getVerticeEmAux(posicao, 0);
+		}
+		int getVerticeEmAux(int num, int i){
+			
+			if(contem(num, *raiz)){
+				if(i == num){
+					return this->valor;
+				}else{
+					getVerticeEmAux(num, ++i);
+				}
+			}
+			return 0;
+		}	
+		T *getVerticeDe(int num){
+			return acha(num, *raiz);	
+		}		
+		void print(){
+			printAux(*raiz);
+		}
+		void printAux(T no){
+			if(no != NULL){
+				cout << no << " ";
+				printAux(no.getProx());
+			}
 		}
 };
 
@@ -212,8 +306,7 @@ class Vertice{
 		}
 		
 };
-
-
+/*
 template <class T>
 class Lista{
 	private:
@@ -226,49 +319,53 @@ class Lista{
 			cont++;
 		}
 		
-		bool contem(int num){
-			for(int i = 0; i < cont; i++){
-				if(lista[i].getValor() == num){
-					return true;
-				}
-			}
-			return false;
+		void remove(T v){
+			
 		}
 		
-		T* getVerticeDe(int num){
-			for(int i = 0; i < cont; i++){
-				if(lista[i].getValor() == num){
-					return &lista[i];
-				}
-			}
-		}
-		
-		T* getVerticeEm(int position){
-			return &lista[position];
-		}
-		
-		void print(){
-			for(int i = 0; i < cont; i++){
-				cout << lista[i] <<"\n";//.getValor() <<"\n";
-			}
-		}
-		
-		void retiraUltimo(){
-			lista[cont] = NULL;
-			cont--;
-		}
-		
-		int getTam(){
-			return cont;
-		}
-		
-		/*
+//		
+//		bool contem(int num){
+//			for(int i = 0; i < cont; i++){
+//				if(lista[i].getValor() == num){
+//					return true;
+//				}
+//			}
+//			return false;
+//		}
+//		
+//		T* getVerticeDe(int num){
+//			for(int i = 0; i < cont; i++){
+//				if(lista[i].getValor() == num){
+//					return &lista[i];
+//				}
+//			}
+//		}
+//		
+//		T* getVerticeEm(int position){
+//			return &lista[position];
+//		}
+//		
+//		void print(){
+//			for(int i = 0; i < cont; i++){
+//				cout << lista[i] <<"\n";//.getValor() <<"\n";
+//			}
+//		}
+//		
+//		void retiraUltimo(){
+//			lista[cont] = NULL;
+//			cont--;
+//		}
+//		
+//		int getTam(){
+//			return cont;
+//		}
+//		
 		T* getLista(){
 			return &lista[100];
 		}
-		*/
+		
 };
-
+*/
 template <class T>
 class Graph{
 	private:
@@ -286,7 +383,7 @@ class Graph{
 			return ordem;
 		}
 		
-		void insertEdge(int v, int u, float dist){
+		void insertEdge(Vertex v, Vertex u, float dist){
 			if(lista.contem(v) == false){
 				Vertice<Cor> v1;
 				v1.setValor(v);
@@ -303,6 +400,12 @@ class Graph{
 			vertU->adicionaVertice(vertV, dist);
 			vertV->adicionaVertice(vertU, dist);
 		}
+		
+//		void removeEdge(Vertex v){
+//			Vertex *vertV = lista.getVertexDe(v);
+//			
+//			Vertex *adjAux = vertV->getAdjI();
+//		}
 		
 		void printTemp(){//apagar mais tarde
 			for(int i = 0; i < ordem; i++){
@@ -410,7 +513,6 @@ class Graph{
 		
 };
 
-
 template <class T>
 class Util{
 	public:
@@ -460,7 +562,7 @@ int main(int argc, const char * argv[]) {
 	float *inimigos;
 	int sistInic;
 	int sistFinal;
-	int *caminho;// = new int[100];
+	int *caminho;
 	
 	//Pega ordem e tamanho
 	getline(cin, entrada);
@@ -470,8 +572,8 @@ int main(int argc, const char * argv[]) {
 	
 	//Cria o Grafo de acordo com a ordem fornecida acima pelo usuario
 	Graph<Vertice<Cor> > universo(ordem);
-	//Cria uma lista de grafos que contem todos os sistemas
-	Lista<Graph<Vertice<Cor> > > *sistema;//implementacao porca melhorar depois
+//	Cria uma lista de grafos que contem todos os sistemas
+//	Lista<Graph<Vertice<Cor> > > *sistema;//implementacao porca melhorar depois
 //	sistema = new Graph<Vertice<Cor> >(100);
 	
 	//Cria um grafo com os vertices que o usuario insere
@@ -480,17 +582,20 @@ int main(int argc, const char * argv[]) {
 		aux = util.split(entrada);
 		universo.insertEdge(aux[0], aux[1], 0);
 	}
+	
 	/*
 	// Pega os inimigos da federacao
 	getline(cin, entrada);
 	inimigos = util.split(entrada);
-	
+	*/
 	//Pega o sistema onde se inicia a viagem e o sistema de destino
 	getline(cin, entrada);
 	aux = util.split(entrada);
 	sistInic = aux[0];
 	sistFinal = aux[1];
-	*/
+	
+	caminho = universo.BFS(universo.getVerticeDe(sistInic), sistFinal);
+	
 	//Pega os sistemas planetarios "contidos" nos vertices do grafo universo
 	
 	cont = 0;//de novo, implementacao porca...
@@ -504,19 +609,12 @@ int main(int argc, const char * argv[]) {
 		
 		Graph<Vertice<Cor> > graphAux(ordemAux);
 		
-		
 		for(int j = 0; j < tamanhoAux; j++){
-			//cout << "entra no loop" << endl;
 			getline(cin, entrada);
 			aux = util.split(entrada);
 			graphAux.insertEdge(aux[0], aux[1], aux[2]);
-			//cout << "setDistancia" << endl;//"hello world!" << endl;
 		}
-		
-		//cout << "saiu do loop interno: " << cont << endl;
-		
-		graphAux.printTemp();//BFS(graphAux.getVerticeDe(1), 2);
-		//cout << "hello world!" << endl;
+		graphAux.printTemp();
 		cont++;
 		
 	}
