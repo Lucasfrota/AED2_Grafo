@@ -99,15 +99,6 @@ class Item{
 		T *getVerticeDe(int num){
 			return acha(num, *raiz);	
 		}		
-		void print(){
-			printAux(*raiz);
-		}
-		void printAux(T no){
-			if(no != NULL){
-				cout << no << " ";
-				printAux(no.getProx());
-			}
-		}
 };
 
 template <class T>
@@ -128,7 +119,6 @@ class Fila{
 				items[i].setValor(-1);
 			}
 			
-			//this->frente = items;
 			this->tras = items;
 			this->tamAbsoluto = tam;
 			this->tam = 0; 
@@ -151,22 +141,12 @@ class Fila{
 
 			int saida = this->items[1].getValor();
 			
-			//item = *this->frente;
-			
-			//frente = this->frente->getProx();
-			
 			desaloque(this->items);
 			
 			this->tam--;
 			this->tras--;
 			
 			return saida;
-		}
-		
-		void mostra(){
-			for(int i = 1; i < tam+1; i++)
-				cout << items[i].getValor() << " | ";
-			cout << endl;
 		}
 		
 		int getTam(){
@@ -212,18 +192,6 @@ class Vertice{
 				}
 			}
 			return 0;
-		}
-		
-		void printAdj(){
-			for(int i = 0; i < cont; i++){
-				cout << adjI[i] << " ";
-			}
-			cout << " | ";
-			for(int i = 0; i < cont; i++){
-				cout << dist[i] << " ";
-			}
-			cout << endl;
-			
 		}
 		
 		void setValor(int valor){
@@ -332,12 +300,6 @@ class Lista{
 			return &lista[position];
 		}
 		
-		void print(){
-			for(int i = 0; i < cont; i++){
-				cout << lista[i] <<"\n";
-			}
-		}
-		
 		void retiraUltimo(){
 			lista[cont] = NULL;
 			cont--;
@@ -400,7 +362,6 @@ class Graph{
 		}
 		
 		T* getVerticeDe(int num){
-			//cout << "pegou o vertice" << endl;
 			return lista.getVerticeDe(num);
 		}
 		
@@ -426,8 +387,7 @@ class Graph{
 
 			for(int i = 0; i < u->getQtddVertice();i++){
 				if(getVerticeDe(listaAdj[i])->getCor() == branco){
-					getVerticeDe(listaAdj[i])->setPi(getVerticeDe(u->getValor()));//u);
-//					cout << getVerticeDe(u->getValor())->getDistanciaPara(listaAdj[i]) << endl;
+					getVerticeDe(listaAdj[i])->setPi(getVerticeDe(u->getValor()));
 					custo += getVerticeDe(u->getValor())->getDistanciaPara(listaAdj[i]);
 					DFS_VISITA(getVerticeDe(listaAdj[i]));
 				}
@@ -438,7 +398,7 @@ class Graph{
 		}
 		
 		void pintaInimigo(float* inimigos){
-			int i = 0;
+			int i = 1;
 			while(inimigos[i] != -1){
 				getVerticeDe(inimigos[i])->setCor(preto);
 				i++;
@@ -519,9 +479,8 @@ class Util{
 		T* split(string str){
 			int cont = 0;
 			int p = 0;
-			//int len = str.length();
 			
-			float *saida = new float[3];
+			float *saida = new float[10];
 			string aux;
 			
 			aux = str.at(str.length()-1);
@@ -574,44 +533,29 @@ int main(int argc, const char * argv[]) {
 	int *caminho;
 	float totalCusto = 0;
 	
-	//Pega ordem e tamanho
 	getline(cin, entrada);
 	aux = util.split(entrada);
 	ordem = aux[0];
 	tamanho = aux[1];
 	
-	
-	//Cria o Grafo de acordo com a ordem fornecida acima pelo usuario
 	Graph<Vertice<Cor> > universo(ordem);
 	
-	//Cria um grafo com os vertices que o usuario insere
 	for(int i = 0; i < tamanho; i++){
 		getline(cin, entrada);
 		aux = util.split(entrada);
 		universo.insertEdge(aux[0], aux[1], 0);
 	}
 	
-	// Pega os inimigos da federacao
 	getline(cin, entrada);
 	inimigos = util.split(entrada);
 	
-	//Pega o sistema onde se inicia a viagem e o sistema de destino
 	getline(cin, entrada);
 	aux = util.split(entrada);
 	sistInic = aux[0];
 	sistFinal = aux[1];
 	
 	caminho = universo.BFS(universo.getVerticeDe(sistInic), sistFinal, inimigos);
-	/*
-	int it = 0;
-	while(caminho[it] != -1){
-		cout << caminho[it] << " | ";
-		it++;
-	}
 	
-	cout << endl;
-	*/
-	//Pega os sistemas planetarios "contidos" nos vertices do grafo universo
 	cont = 0;
 	for(int i = 1; i <= ordem; i++){
 
@@ -629,15 +573,8 @@ int main(int argc, const char * argv[]) {
 		
 		if(util.estaEm(i, caminho) == true){
 			graphAux.DFS();
-//			cout <<"custo unitario do grafo que esta no caminho: "<< graphAux.getCusto() << endl; 
 			totalCusto += graphAux.getCusto();
 		}
-		/*
-		else{//retirar depois
-			graphAux.DFS();
-			cout <<"custo unitario do grafo: "<< graphAux.getCusto() << endl; 
-		}
-		*/
 		cont++;
 	}
 	cout << totalCusto << ".0";
