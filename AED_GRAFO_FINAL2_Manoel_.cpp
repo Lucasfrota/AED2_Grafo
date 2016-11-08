@@ -9,8 +9,7 @@ using namespace std;
 enum Cor{
 	branco,
 	cinza,
-	preto,
-	vermelho
+	preto
 };
 
 template <class T>
@@ -52,6 +51,22 @@ class Item{
 				contem(elemento, no.getProx());	
 			}
 		}
+		// void retira(T v){
+		// 	T *aux = acha(v, *raiz);							
+			
+		// 	if(*aux != *raiz){								
+		// 		aux->setProx(aux->getProx()->getProx());	 
+		// 		aux->getProx()->setProx(NULL);
+		// 	}else{
+		// 		raiz = acha(v, *raiz);
+				
+		// 		T auxiliar = *raiz;
+				
+		// 		raiz->setProx(NULL);
+
+		// 		raiz = auxiliar.getProx();
+		// 	}
+		// }
 		T acha(T elemento, T no){		
 			
 			if(contem(elemento, *raiz)){ 			
@@ -428,7 +443,7 @@ class Graph{
 			
 			while(inimigos[i] != -1){
 			
-				getVerticeDe(inimigos[i])->setCor(vermelho);
+				getVerticeDe(inimigos[i])->setCor(preto);
 				i++;
 			
 			}
